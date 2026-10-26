@@ -1,0 +1,102 @@
+import type { ChartData, DashboardStats } from '../types/api'
+import type { Order } from '../types/order'
+
+export const dashboardStats: DashboardStats = {
+  totalRevenue: 48294.5,
+  totalOrders: 1248,
+  totalProducts: 356,
+  totalUsers: 892,
+  revenueChange: 12.8,
+  ordersChange: 8.2,
+  productsChange: 4.3,
+  usersChange: 10.1,
+}
+
+export const dashboardChartData: ChartData[] = [
+  { date: 'Oct 20', revenue: 3200, orders: 42 },
+  { date: 'Oct 21', revenue: 4100, orders: 51 },
+  { date: 'Oct 22', revenue: 3650, orders: 47 },
+  { date: 'Oct 23', revenue: 5200, orders: 66 },
+  { date: 'Oct 24', revenue: 4700, orders: 59 },
+  { date: 'Oct 25', revenue: 6100, orders: 73 },
+  { date: 'Oct 26', revenue: 5580, orders: 68 },
+]
+
+export const recentOrders: Order[] = [
+  {
+    id: 'order-1001',
+    orderNumber: '#ORD-1001',
+    customer: { id: 'customer-1', name: 'Olivia Martin', email: 'olivia@example.com' },
+    items: [],
+    status: 'delivered',
+    totalAmount: 249.99,
+    shippingAddress: {
+      street: '12 Market Street',
+      city: 'Portland',
+      state: 'OR',
+      zipCode: '97201',
+      country: 'US',
+    },
+    paymentMethod: 'Card',
+    paymentStatus: 'paid',
+    createdAt: '2026-10-26T14:20:00.000Z',
+    updatedAt: '2026-10-26T14:20:00.000Z',
+  },
+  {
+    id: 'order-1002',
+    orderNumber: '#ORD-1002',
+    customer: { id: 'customer-2', name: 'Jackson Lee', email: 'jackson@example.com' },
+    items: [],
+    status: 'processing',
+    totalAmount: 189.5,
+    shippingAddress: {
+      street: '45 Pine Avenue',
+      city: 'Seattle',
+      state: 'WA',
+      zipCode: '98101',
+      country: 'US',
+    },
+    paymentMethod: 'PayPal',
+    paymentStatus: 'paid',
+    createdAt: '2026-10-26T12:45:00.000Z',
+    updatedAt: '2026-10-26T12:45:00.000Z',
+  },
+  {
+    id: 'order-1003',
+    orderNumber: '#ORD-1003',
+    customer: { id: 'customer-3', name: 'Isabella Nguyen', email: 'isabella@example.com' },
+    items: [],
+    status: 'pending',
+    totalAmount: 320,
+    shippingAddress: {
+      street: '8 Oak Lane',
+      city: 'Austin',
+      state: 'TX',
+      zipCode: '73301',
+      country: 'US',
+    },
+    paymentMethod: 'Card',
+    paymentStatus: 'unpaid',
+    createdAt: '2026-10-26T10:10:00.000Z',
+    updatedAt: '2026-10-26T10:10:00.000Z',
+  },
+  {
+    id: 'order-1004',
+    orderNumber: '#ORD-1004',
+    customer: { id: 'customer-4', name: 'William Kim', email: 'william@example.com' },
+    items: [],
+    status: 'shipped',
+    totalAmount: 84.25,
+    shippingAddress: {
+      street: '210 Cedar Road',
+      city: 'Denver',
+      state: 'CO',
+      zipCode: '80201',
+      country: 'US',
+    },
+    paymentMethod: 'Card',
+    paymentStatus: 'paid',
+    createdAt: '2026-10-25T18:30:00.000Z',
+    updatedAt: '2026-10-25T18:30:00.000Z',
+  },
+]

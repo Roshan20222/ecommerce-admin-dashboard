@@ -1,0 +1,91 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function hasActiveProfile() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isActive == true;
+    }
+
+    function isEditorOrAdmin() {
+      return hasActiveProfile()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'editor'];
+    }
+
+    function isAdmin() {
+      return hasActiveProfile()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function validProduct(data) {
+      return data.keys().hasAll([
+          'name', 'description', 'price', 'stock', 'category', 'status',
+          'images', 'sku', 'tags', 'createdAt', 'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'name', 'description', 'price', 'compareAtPrice', 'stock', 'category',
+          'status', 'images', 'sku', 'tags', 'createdAt', 'updatedAt'
+        ])
+        && data.name is string
+        && data.name.size() > 0
+        && data.name.size() <= 160
+        && data.description is string
+        && data.description.size() <= 10000
+        && data.price is number
+        && data.price >= 0
+        && (!('compareAtPrice' in data) || (data.compareAtPrice is number && data.compareAtPrice >= 0))
+        && data.stock is int
+        && data.stock >= 0
+        && data.category in ['electronics', 'clothing', 'furniture', 'books', 'sports', 'beauty', 'food', 'other']
+        && data.status in ['active', 'draft', 'archived']
+        && data.images is list
+        && data.images.size() <= 10
+        && data.sku is string
+        && data.sku.size() > 0
+        && data.sku.size() <= 80
+        && data.tags is list
+        && data.tags.size() <= 20
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    match /users/{userId} {
+      allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isAdmin();
+      allow create, delete: if false;
+      allow update: if isAdmin()
+        && request.auth.uid != userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['role', 'isActive'])
+        && request.resource.data.role in ['admin', 'editor', 'viewer']
+        && request.resource.data.isActive is bool;
+    }
+
+    match /products/{productId} {
+      allow read: if hasActiveProfile();
+      allow create: if isEditorOrAdmin() && validProduct(request.resource.data);
+      allow update: if isEditorOrAdmin()
+        && validProduct(request.resource.data)
+        && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if isEditorOrAdmin();
+    }
+
+    match /orders/{orderId} {
+      allow read: if hasActiveProfile();
+      allow create: if false;
+      allow update: if isEditorOrAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
+        && request.resource.data.status in ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded']
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
