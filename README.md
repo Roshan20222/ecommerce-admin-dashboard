@@ -3,6 +3,7 @@
 A Vite, React, and TypeScript admin application. The current implementation
 includes a responsive dashboard shell, mock dashboard metrics and charts,
 Firebase email/password authentication scaffolding, and theme/sidebar state.
+Live site: https://roshan20222.github.io/ecommerce-admin-dashboard/
 
 ## Getting started
 
@@ -90,25 +91,16 @@ The unit tests cover auth-store state transitions and product filtering.
 
 ## Deploy to GitHub Pages
 
-The repository includes a GitHub Actions workflow at
-`.github/workflows/deploy.yml`. On GitHub:
+The project is deployed from the public
+[`Roshan20222/ecommerce-admin-dashboard`](https://github.com/Roshan20222/ecommerce-admin-dashboard)
+repository using `.github/workflows/deploy.yml`. The Pages workflow runs the
+tests, lint, build, and deployment on pushes to `main`.
 
-1. Push this project to a repository owned by `Roshan20222` named
-   `ecommerce-admin-dashboard`, using the `main` branch.
-2. In the repository, open **Settings → Pages** and set the build and
-   deployment source to **GitHub Actions**.
-3. Open **Settings → Secrets and variables → Actions → Variables** and add
-   these six variables from the Firebase web app configuration:
-   `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_AUTH_DOMAIN`,
-   `VITE_FIREBASE_PROJECT_ID`, `VITE_FIREBASE_STORAGE_BUCKET`,
-   `VITE_FIREBASE_MESSAGING_SENDER_ID`, and `VITE_FIREBASE_APP_ID`.
-   These are browser-side Firebase configuration values, not admin credentials.
-4. Push to `main` or manually run **Deploy to GitHub Pages** from the
-   **Actions** tab. The project site URL will be
-   `https://roshan20222.github.io/ecommerce-admin-dashboard/`.
-5. In Firebase Console, add `roshan20222.github.io` under **Authentication →
-   Settings → Authorized domains**. Publish the current `firestore.rules`
-   before using live database features.
+The repository is configured with the six Firebase Actions variables, GitHub
+Pages uses the Actions deployment workflow, and
+`roshan20222.github.io` is added to Firebase Authentication's authorized
+domains. Publish the current `firestore.rules` before using live database
+features; verify those rules against existing data before publishing.
 
 The app uses hash-based routing so refreshing a nested page works on static
 GitHub Pages hosting. GitHub Pages serves a public website; Firebase

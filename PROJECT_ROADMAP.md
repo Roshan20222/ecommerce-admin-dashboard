@@ -9,7 +9,7 @@ status below is based on the source code and package manifest.
 | Phase | Steps | Status |
 | --- | --- | --- |
 | Foundation | 1-5, 7 | Complete: Vite/React/TypeScript, dependencies, Tailwind, folders/types, and Zustand stores are present. |
-| Firebase setup | 6 | Local config is present; auth implementation exists. Live verification requires published security rules and a successful sign-in. |
+| Firebase setup | 6 | Firebase config is present, and the GitHub Pages hostname is authorized for Auth. Live sign-in and Firestore access still need verification; latest security rules are not yet published. |
 | Layout & auth | 8-14 | Implemented: dashboard shell, sidebar, navbar, login, routing, protected-route foundation, and theme toggle. |
 | Dashboard | 15-19 | Implemented with typed mock data: stat cards, revenue/orders charts, and recent orders. |
 | Products CRUD | 20-27 | Product create/list/edit/delete works without images. Optional image uploads are implemented but disabled by default because Storage requires Blaze. |
@@ -27,10 +27,10 @@ status below is based on the source code and package manifest.
    `npm test`, finish responsive QA across desktop/tablet/mobile, and review
    dependency advisories. Lint, TypeScript build, and production build are
    already passing.
-3. **Deploy:** GitHub Pages is selected. Create the public
-   `Roshan20222/ecommerce-admin-dashboard` repository, configure the six
-   Firebase Actions variables, enable Pages with GitHub Actions, and add
-   `roshan20222.github.io` to Firebase Authentication's authorized domains.
+3. **Deployment:** complete. The public
+   `Roshan20222/ecommerce-admin-dashboard` repository deploys through GitHub
+   Actions at `https://roshan20222.github.io/ecommerce-admin-dashboard/`.
+   Firebase Actions variables and the Auth authorized domain are configured.
 4. **Optional image uploads:** when a supported Firebase Storage billing plan
    is available, enable the default bucket, publish `storage.rules`, and set
    `VITE_FIREBASE_STORAGE_ENABLED=true`.
@@ -66,8 +66,11 @@ status below is based on the source code and package manifest.
   updates still need testing after the latest `firestore.rules` are published.
 - Image uploads require an eligible Firebase Storage billing plan and remain
   disabled by default; product CRUD without images does not require Storage.
-- GitHub Pages deployment workflow is configured, but publishing is blocked
-  until the owner reauthenticates GitHub CLI and the repository is created.
+- GitHub Pages is deployed and its login page loads. Sign-in with the owner's
+  account and live Firestore operations remain to be validated.
+- Latest `firestore.rules` has not been published. Compare it with current
+  production rules and existing document shapes before publishing, since doing
+  so can change access to live data.
 - `npm audit --omit=dev` currently reports four high-severity findings in the
   Firebase/Firestore dependency tree. Review a compatible fix before release;
   do not apply a major-version downgrade automatically.
